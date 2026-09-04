@@ -1,0 +1,27 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard RSI</title>
+</head>
+<body>
+
+<h1>Dashboard RSI</h1>
+
+<p id="ultima-atualizacao">
+Carregando...
+</p>
+
+<script>
+fetch('./dados/status.json')
+.then(r => r.json())
+.then(d => {
+document.getElementById(
+'ultima-atualizacao'
+).innerHTML =
+'Última atualização: ' +
+d.ultima_atualizacao;
+});
+</script>
+
+</body>
+</html>
