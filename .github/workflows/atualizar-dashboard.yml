@@ -1,13 +1,7 @@
-name: Atualizar Dados RSI
+name: Atualizar Dados Dashboard
 
 on:
   workflow_dispatch:
-
-  schedule:
-    - cron: '0 */6 * * *'
-
-permissions:
-  contents: write
 
 jobs:
   atualizar:
@@ -16,22 +10,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - run: pip install requests
-
-      - name: Atualizar dados
-        env:
-          RSI_API_URL: ${{ secrets.RSI_API_URL }}
+      - name: Atualizar status.json
         run: |
-          python scripts/atualizar_ofertas.py
+          mkdir -p dados
 
-      - name: Commit
+          cat > dados/status.json << EOF
+          {
+            "ultima_atualizacao":"$(date '+%d/%m/%Y %H:%M')",
+            "fonte":"GitHub Actions",
+            "status":"ativo"
+          }
+          EOF
+
+      - name: Commit alterações
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
-          git commit -m "Atualização automática RSI" || echo "Sem alterações"
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add dados/status.json
+
+          git commit -m "Atualização automática status" || echo "Sem alterações"
+
           git push
