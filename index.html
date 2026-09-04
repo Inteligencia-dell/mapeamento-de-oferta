@@ -1,49 +1,37 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel RSI</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel RSI</title>
 </head>
 
 <body>
+  <h1>Painel RSI</h1>
 
-<h1>Painel RSI</h1>
+  <p id="ultima-atualizacao">
+    Carregando...
+  </p>
 
-<p id="ultima-atualizacao">
-Carregando...
-</p>
+  <script>
+    fetch("./dados/status.json?v=" + Date.now())
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error("HTTP " + response.status);
+        }
 
-<script>
+        return response.json();
+      })
+      .then(function(data) {
+        document.getElementById("ultima-atualizacao").textContent =
+          "Última atualização: " + data.ultima_atualizacao;
+      })
+      .catch(function(error) {
+        document.getElementById("ultima-atualizacao").textContent =
+          "Erro ao carregar status.json";
 
-fetch('./dados/status.json')
-
-.then(response => response.json())
-
-.then(data => {
-
-document.getElementById(
-'ultima-atualizacao'
-).innerHTML =
-'Última atualização: ' +
-data.ultima_atualizacao;
-
-})
-
-.catch(error => {
-
-document.getElementById(
-'ultima-atualizacao'
-).innerHTML =
-'Erro ao carregar';
-
-console.error(error);
-
-});
-
-</script>
-
+        console.error(error);
+      });
+  </script>
 </body>
 </html>
- 
-<!-- atualização v3 --> 
