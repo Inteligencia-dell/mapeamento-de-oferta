@@ -1,26 +1,46 @@
- <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-<title>Dashboard RSI</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel RSI</title>
 </head>
+
 <body>
 
-<h1>Dashboard RSI</h1>
+<h1>Painel RSI</h1>
 
 <p id="ultima-atualizacao">
 Carregando...
 </p>
 
 <script>
+
 fetch('./dados/status.json')
-.then(r => r.json())
-.then(d => {
+
+.then(response => response.json())
+
+.then(data => {
+
 document.getElementById(
 'ultima-atualizacao'
 ).innerHTML =
 'Última atualização: ' +
-d.ultima_atualizacao;
+data.ultima_atualizacao;
+
+})
+
+.catch(error => {
+
+document.getElementById(
+'ultima-atualizacao'
+).innerHTML =
+'Erro ao carregar';
+
+console.error(error);
+
 });
+
 </script>
 
 </body>
